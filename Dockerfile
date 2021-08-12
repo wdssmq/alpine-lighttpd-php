@@ -23,6 +23,7 @@ RUN apk --update add \
     rm -rf /var/cache/apk/*
 
 ADD etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf
+ADD etc/php7/php.ini /etc/php7/php.ini
 RUN mkdir -p /run/lighttpd/
 RUN chown www-data. /run/lighttpd/
 
