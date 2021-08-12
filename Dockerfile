@@ -14,6 +14,7 @@ RUN apk --update add \
     fcgi \
     php-pdo \
     php-pdo_pgsql \
+    php-mysqli \
     php-soap \
     php-xmlrpc \
     php-posix \
