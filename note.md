@@ -1,34 +1,39 @@
+### 构建并使用
+
 ```bash
+# 构建镜像
 cd /root/Git/alpine-lighttpd-php
 docker build -t wdssmq/lighttpd-php .
 
 # 部署容器
 DIR_lighttpd='/home/www/lighttpd'
+PORT_lighttpd=8033
 mkdir -p $DIR_lighttpd
 cd ${DIR_lighttpd}
 docker rm --force lighttpd-php
 docker run --name lighttpd-php \
  --net=net_web \
- -p 8033:80 \
+ -p ${PORT_lighttpd}:80 \
  -v $(pwd):/var/www \
  -d wdssmq/lighttpd-php
-
+# 「调试」查看日志
 docker logs lighttpd-php
 
-# 进入容器内部
+# 「调试」进入容器内部
 docker exec -it lighttpd-php /bin/sh
 
+# 「在容器内」查看 PHP 模块
 php-cgi -m
 
-# 复制文件
+# 「调试」复制文件
 docker cp lighttpd-php:/etc/lighttpd "/root/Git/alpine-lighttpd-php/etc.out"
 docker cp lighttpd-php:/etc/php7 "/root/Git/alpine-lighttpd-php/etc.out"
 
-# docker cp  "/root/ssh-lighttpd/etc/php7/php.ini" lighttpd-php:/etc/php7/php.ini
+# docker cp "/root/ssh-lighttpd/etc/php7/php.ini" lighttpd-php:/etc/php7/php.ini
 docker restart lighttpd-php
 ```
 
-
+### 下载 Z-BlogPHP
 
 ```bash
 ## Download Z-BlogPHP
@@ -41,7 +46,7 @@ if ! [ -e index.php ]; then
     wget https://update.zblogcn.com/zip/$ZC_INSTALL_NAME.tar.gz
     echo Unpacking Z-BlogPHP...
     tar -xf ./$ZC_INSTALL_NAME.tar.gz
-    echo Delete zip
+    echo Delete $ZC_INSTALL_NAME.tar.gz
     rm $ZC_INSTALL_NAME.tar.gz
 fi
 ```
